@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta name="viewport" content="width=device-width, initial-scale=0.8">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/flash.jpeg">
+    <link rel="stylesheet" type="text/css" href="css/king.css">
+</head>
+<body>
+    <div class="login-box">
+        <h2>𝐃𝐄𝐏𝐋𝐎𝐘 𝐅𝐋𝐀𝐒𝐇-𝐌𝐃</h2>
+        <form id="username" method="get" action="/deploy">
+            <div class="user-box">
+                <input type="text" id="name" name="username" required="">
+                <label>ENTER YOUR GITHUB USERNAME</label>
+            </div>
+            <a onclick="authorize();" data-platform="https://dashboard.heroku.com/new?template=https://github.com/France-King1/Flash-Md">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                DEPLOY
+            </a>
+        </form>
+    </div>
+    <script src="js/axios.js"></script>
+    <script type="text/javascript">
+
+
+
+        const urls = 'https://dashboard.heroku.com/new?template=https://github.com/France-King1/Flash-Md';  
+
+
+
+       
+
+        async function authorize() {
+        let gitApi = `https://api.github.com`
+        let owner = 'franceking1'
+        let text = document.getElementById('name').value;
+
+            console.log("Text: ", text);
+            if ( text.length > 0 && text !== owner) {
+                text = text.split("|")[0].trim()
+                console.log("Text : " , text)
+                try {
+                    const { data } = await axios(`${gitApi}/users/${text}`)
+                    try {
+                        const repo = await axios(`${gitApi}/repos/${text}/Flash-Md`);
+                    } catch (e) {
+                        try {
+                            const repo = await axios(`${gitApi}/repos/${text}/Flash`);
+                        } catch (e) {
+                            alert("Fork The Repository First.\nClick The 'OK' Button To Fork")
+                            return location.replace(`https://github.com/franceking1/Flash-Md/fork`)
+                        }
+                    }      
+                    if(urls && ( urls.startsWith("https") || urls.startsWith("Http") ) ) window.location.replace(`${urls}`)       
+                    else alert("France King does not recognize that username in FLASH-MD forks list, please fork FLASH-MD and enter your CORRECT USERNAME.")
+
+                 } catch (error) { alert('Invalid Username. Please ensure you have forked the repo first without modifying it!') }
+            } else if (text === owner) { alert('Please Enter Your Username. Developer Username Cant be Used!') }
+        }
+    </script>    
+
+
+</body></html>
